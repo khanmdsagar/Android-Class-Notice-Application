@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddActivity">
+
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:padding="10dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/noticeDate"
+            android:background="@drawable/round_shape"
+            android:textSize="17sp"
+            android:hint="Date"
+            android:layout_width="250dp"
+            android:layout_height="40dp" />
+
+        <TextView
+            android:padding="10dp"
+            android:id="@+id/noticeTime"
+            android:background="@drawable/round_shape"
+            android:layout_marginBottom="15dp"
+            android:textSize="17sp"
+            android:hint="Time"
+            android:layout_width="250dp"
+            android:layout_height="40dp" />
+
+        <EditText
+            android:inputType="numberPassword"
+            android:layout_marginBottom="15dp"
+            android:padding="10dp"
+            android:id="@+id/security"
+            android:background="@drawable/round_shape"
+            android:textSize="17sp"
+            android:hint="Security Code"
+            android:layout_width="250dp"
+            android:layout_height="40dp" />
+
+        <EditText
+            android:layout_marginBottom="15dp"
+            android:padding="10dp"
+            android:id="@+id/noticeText"
+            android:background="@drawable/round_shape"
+            android:textSize="17sp"
+            android:hint="Notice Message"
+            android:layout_width="250dp"
+            android:minHeight="100dp"
+            android:maxHeight="200dp"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:foreground="?android:attr/selectableItemBackground"
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/noticeUpdate"
+            android:background="@drawable/update_button_shape"
+            android:textColor="#fff"
+            android:textSize="17sp"
+            android:textAllCaps="false"
+            android:text="Update notice"
+            android:layout_width="130dp"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>
