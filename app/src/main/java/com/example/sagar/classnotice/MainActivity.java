@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -69,7 +70,9 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Home");
 
-        startService(new Intent(this,MyService.class));
+        //service
+        Intent serviceIntent = new Intent(MainActivity.this, MyService.class);
+        ContextCompat.startForegroundService(MainActivity.this, serviceIntent);
 
         //checking network
         final CheckingNetwork checkingNetwork = new CheckingNetwork(this);
@@ -77,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
             AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setTitle("Network Error")
-                    .setMessage("Internet Connection is Required")
+                    .setMessage("Internet Connection is Required to See New Notice")
                     .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -93,15 +96,16 @@ public class MainActivity extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference("Class Notice");
 
         Query myNoticeQuery = databaseReference.orderByChild("count").limitToFirst(6);
+        myNoticeQuery.keepSynced(true);
 
 
         addNotice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 startActivity(new Intent(MainActivity.this,AddActivity.class));
             }
         });
+
 
         //reading data
         myNoticeQuery.addValueEventListener(new ValueEventListener() {
@@ -127,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //getting data count for notification
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -162,17 +167,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         final AlertDialog.Builder builderBack = new AlertDialog.Builder(this);
-        builderBack.setTitle("Are you sure want to exit?");
-        builderBack.setMessage("Once you exit\nyou will not get notification\nSo press home button to exit\nand never clean the app.");
+        builderBack.setMessage("Do you want to exit?");
         builderBack.setCancelable(true);
-        builderBack.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+        builderBack.setNegativeButton("No", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
         });
 
-        builderBack.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+        builderBack.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 finish();
@@ -219,7 +223,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this,MainActivity.class);
 
-        PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this,100,intent,PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(MainActivity.this,
+                100,intent,PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder nBuilder =
                 new NotificationCompat.Builder(this,ID)
